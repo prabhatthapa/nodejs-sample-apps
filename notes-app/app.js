@@ -1,8 +1,8 @@
 const chalk = require("chalk");
 const yargs = require("yargs");
 
-const getNotes = require("./notes.js");
-const { command, describe, string } = require("yargs");
+const { getNotes, addNote, removeNote } = require("./notes.js");
+const { command, describe, string, argv } = require("yargs");
 
 // fs.appendFileSync("note.txt", "Welcome to NodeJS");
 
@@ -28,15 +28,22 @@ yargs.command({
     },
   },
   handler: function (argv) {
-    console.log(`Note title - ${argv.title} and body ${argv.body}`);
+    addNote(argv.title, argv.body);
   },
 });
 
 yargs.command({
   command: "remove",
   describe: "Remove a note",
+  builder: {
+    title: {
+      describe: "Note title",
+      demandOption: true,
+      type: "string",
+    },
+  },
   handler: function () {
-    console.log("Remove the note");
+    removeNote(argv.title);
   },
 });
 
