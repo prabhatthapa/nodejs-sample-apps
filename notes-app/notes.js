@@ -1,8 +1,6 @@
 const fs = require("fs");
 const chalk = require("chalk");
 
-const getNotes = () => "Hello World!";
-
 const addNote = (title, body) => {
   const notes = loadNotes();
   const duplicateNotes = notes.filter((note) => note.title === title);
@@ -63,4 +61,4 @@ const saveNotes = (notes) => {
   fs.writeFileSync("./notes.json", notesString);
 };
 
-module.exports = { getNotes, addNote, removeNote, listNotes, readNote };
+module.exports = { addNote, removeNote, listNotes, readNote };

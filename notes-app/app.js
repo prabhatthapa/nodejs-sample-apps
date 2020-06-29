@@ -1,22 +1,6 @@
-const chalk = require("chalk");
 const yargs = require("yargs");
 
-const {
-  getNotes,
-  addNote,
-  removeNote,
-  listNotes,
-  readNote,
-} = require("./notes.js");
-const { command, describe, string, argv } = require("yargs");
-
-// fs.appendFileSync("note.txt", "Welcome to NodeJS");
-
-const notes = getNotes();
-
-// console.log(chalk.green.bold("Success!"));
-
-// console.log(process.argv);
+const { addNote, removeNote, listNotes, readNote } = require("./notes.js");
 
 yargs.command({
   command: "add",
@@ -76,5 +60,4 @@ yargs.command({
   },
 });
 
-// console.log(yargs.argv);
 yargs.parse();
