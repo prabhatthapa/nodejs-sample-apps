@@ -1,13 +1,22 @@
-const request = require("request");
+const geoCode = require("./geoCode");
+const getForecast = require("./getForecast");
 
-const url =
-  "https://api.openweathermap.org/data/2.5/onecall?lat=51.509865&lon=-0.118092&units=metric&exclude=hourly,daily&appid=48110bc154c9b7db8fd3cf76ac71ff3a";
+const address = process.argv[2];
+if (!address) {
+  console.log("Please provide a address.");
+} else {
+  geoCode(address, (error, { lat, long, place }) => {
+    if (error) {
+      return console.log(error);
+    }
 
-request(url, { json: true }, (error, response) => {
-  const data = response.body;
-  const currentWeather = data.current;
+    getForecast(lat, long, (error, forecastData) => {
+      if (error) {
+        return console.log(error);
+      }
 
-  console.log(
-    `${currentWeather.weather[0].description}. It is currently ${currentWeather.temp} degrees out. And it feels like ${currentWeather.feels_like} degrees out.`
-  );
-});
+      console.log("Location - ", place);
+      console.log("Forecast - ", forecastData);
+    });
+  });
+}
