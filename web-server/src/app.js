@@ -1,6 +1,8 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
+const geoCode = require("./utils/geoCode");
+const getForecast = require("./utils/getForecast");
 
 const app = express();
 
@@ -41,6 +43,32 @@ app.get("/help/*", (req, res) => {
     title: "404",
     errorMessage: "Help article not found!",
     name: "Prabhat Thapa",
+  });
+});
+
+app.get("/weather", (req, res) => {
+  if (!req.query.address) {
+    return res.send({
+      error: "You must provide an address",
+    });
+  }
+
+  geoCode(req.query.address, (error, { place, lat, long }) => {
+    if (error) {
+      res.send({ error });
+    }
+
+    getForecast(lat, long, (error, forecast) => {
+      if (error) {
+        res.send({ error });
+      }
+
+      return res.send({
+        forecast,
+        location: place,
+        address: req.query.address,
+      });
+    });
   });
 });
 
